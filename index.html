@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+</head>
+<body>
+
+    
+        <div class="d-flex align-items-center justify-content-center mt-5">
+            <div class="card w-50 mt-5">
+                <div class="card-body">
+                  <h5 class="card-title">Data</h5>
+                  <form>
+                    <fieldset >
+                        <div class="mb-3">
+                            <label for="nama" class="form-label">Nama</label>
+                            <input type="text" id="nama" class="form-control" placeholder="Nama">
+                        </div>
+                        Pilih Produk
+                        <div class="container" id="produk">
+                            <div class="row" id="pesanan-1">
+                              <div class="col">
+                                <div class="mb-3">
+                                    <label for="produk-1" class="form-label">Produk</label>
+                                    <select id="produk-1" class="form-select">
+                                    <option value="">Pilih Produk</option>
+                                    <option value="Jet Tempur">Jet Tempur</option>
+                                    <option value="Nuklir Hiroshima">Nuklir Hiroshima</option>
+                                    <option value="Infinity Stone">Infinity Stone</option>
+                                    <option value="Burj Khalifa">Burj Khalifa</option>
+                                    <option value="Rudal Hipersonik" >Rudal Hipersonik</option>
+                                    </select>
+                                </div>
+                              </div>
+                              <div class="col">
+                                <div class="mb-3">
+                                    <label for="jumlah-1" class="form-label">Jumlah</label>
+                                    <input type="number" id="jumlah-1" class="form-control" placeholder="Jumlah" min="0">
+                                </div>
+                              </div>
+                              <div class="col align-self-center mt-3" id="berubah-1">
+                                <button type="button" class="btn btn-primary" id="tambah">Tambah</button>
+                              </div>
+                            </div>
+                          </div>
+                        
+                          <div class="d-flex flex-column bd-highlight mb-3">
+                            <button type="submit" class="btn btn-primary" id="pesan">Pesan</button>
+                          </div>
+                        
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>  
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+      <script>
+          let i = 1;
+
+          let produk = [
+            {name: 'Jet Tempur', stock: 10},
+            {name: 'Nuklir Hiroshima', stock: 1},
+            {name: 'Infinity Stone', stock: 6},
+            {name: 'Burj Khalifa', stock: 5},
+            {name: 'Rudal Hipersonik', stock: 3},
+          ];
+
+             function hapus(i){
+                $(`#pesanan-${i}`).remove();
+                alert(i);
+            }
+          
+          $(document).on("click","#tambah",async function() {
+              if($(`#produk-${i}`).val() == ""){
+                alert("Pilih produk terlebih dahulu")
+              }
+              else if($(`#jumlah-${i}`).val() == ""){
+                alert("Isi jumlah pesanan terlebih dahulu")
+              }
+              else{
+              produk = produk.filter(function(value, index, arr){ 
+                return value.name != $(`#produk-${i}`).val();
+              });
+
+              $(`#produk-${i}`).attr('disabled', true);
+              $(`#jumlah-${i}`).attr('disabled', true);
+              
+               await $(`#berubah-${i}`).html(`<button type="button" class="btn btn-danger" onclick="hapus(${i})" >Delete</button>`);
+               await i++;
+
+             await $("#produk").append(`<div class="row" id="pesanan-${i}">` +
+                                    '<div class="col">' +
+                                        '<div class="mb-3">' +
+                                            `<label for="produk-${i}" class="form-label">Produk</label>` +
+                                            `<select id="produk-${i}" class="form-select">` +
+                                            '<option value="">Pilih Produk</option>' +
+                                            (produk.find( ({ name }) => name === "Jet Tempur"  ) ? '<option value="Jet Tempur">Jet Tempur</option>' : '') +
+                                            (produk.find( ({ name }) => name === "Nuklir Hiroshima"  ) ? '<option value="Nuklir Hiroshima">Nuklir Hiroshima</option>' : '') +
+                                            (produk.find( ({ name }) => name === "Infinity Stone"  ) ? '<option value="Infinity Stone">Infinity Stone</option>' : '') +
+                                            (produk.find( ({ name }) => name === "Burj Khalifa"  ) ? '<option value="Burj Khalifa">Burj Khalifa</option>' : '') +
+                                            (produk.find( ({ name }) => name === "Rudal Hipersonik"  ) ? '<option value="Rudal Hipersonik" >Rudal Hipersonik</option>' : '') +
+                                            '</select>' +
+                                        '</div>' +
+                                    '</div>' +
+                                    '<div class="col">' +
+                                        '<div class="mb-3">' +
+                                            `<label for="jumlah-${i}" class="form-label">Jumlah</label>` +
+                                            `<input type="text" id="jumlah-${i}" class="form-control" placeholder="Jumlah">` +
+                                        '</div>' +
+                                    '</div>' +
+                                    `<div class="col align-self-center mt-3" id="berubah-${i}">` +
+                                        '<button type="button" class="btn btn-primary" id="tambah">Tambah</button>' +
+                                    '</div>' +
+                                '</div>'
+            );
+            }
+          });
+      </script>
+</body>
+</html>
